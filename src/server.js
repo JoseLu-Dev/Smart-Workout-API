@@ -12,11 +12,6 @@ setMiddleware(app)
 setExpressVariables(app)
 setRoutes(app)
 
-// routers
-//const usersRouter = require('./routes')
-
-//app.use('/users', usersRouter)
-
 // listen to port
 app.listen(app.get('port'), () => {
   console.log(`Server Started on port ${app.get('port')}`)
