@@ -1,0 +1,9 @@
+# Ignore artifacts:
+.gitignore
+
+
+# Ignore all .extension files:
+# .extension
+.env
+.rest
+.json
