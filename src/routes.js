@@ -11,7 +11,7 @@ function setRoutes(app) {
   const router = express.Router();
 
   // User routes
-  router.use('/user', userRouter)
+  router.use('/users', userRouter)
 
   // Apply the routes to our application
   app.use('', router);
