@@ -1,12 +1,20 @@
-const express = require('express')
 const cors = require('cors')
+const express = require('express')
 
-export default function setMiddleware(app) {
+function setMiddleware(app) {
     // control from what ip to accept request
     app.use(cors({ origin: 'http://localhost:4200' }))
 
     // json middleware
     app.use(express.json())
+
+    // log middleware
+    app.use((req, res, next) => {
+        console.log(`method: ${req.method}`)
+        console.log(`path: ${req.path}`)
+        console.log(`body: ${JSON.stringify(req.body)}`)
+        next();
+    })
 
     // simple error handling middleware
     app.use((err, req, res, next) => {
@@ -16,12 +24,6 @@ export default function setMiddleware(app) {
         }
         next()
     })
-
-    // log middleware
-    app.use((req, res, next) => {
-        console.log(`method: ${req.method}`)
-        console.log(`path: ${req.path}`)
-        console.log(`body: ${JSON.stringify(req.body)}`)
-        next();
-    })
 }
+
+module.exports = setMiddleware

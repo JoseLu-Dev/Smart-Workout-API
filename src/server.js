@@ -1,19 +1,21 @@
 require('dotenv').config()
-require('./database/mongo')
-import setMiddleware from './middleware'
-import setExpressVariables from './expressVariables'
+const connectToDatabase = require('./mongoDB')
+const setMiddleware = require('./middleware/middleware')
+const setExpressVariables = require('./expressVariables')
+const setRoutes = require('./routes')
 
 const express = require('express')
 const app = express()
 
-
+connectToDatabase()
 setMiddleware(app)
 setExpressVariables(app)
+setRoutes(app)
 
 // routers
-const usersRouter = require('./routes/users')
+//const usersRouter = require('./routes')
 
-app.use('/users', usersRouter)
+//app.use('/users', usersRouter)
 
 // listen to port
 app.listen(app.get('port'), () => {
