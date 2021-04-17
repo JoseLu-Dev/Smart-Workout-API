@@ -1,6 +1,10 @@
 const cors = require('cors')
 const express = require('express')
 
+/**
+ * Sets the middleware that the app uses
+ * @param {*} app Express app
+ */
 function setMiddleware(app) {
     // control from what ip to accept request
     app.use(cors({ origin: 'http://localhost:4200' }))
