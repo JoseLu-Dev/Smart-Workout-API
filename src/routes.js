@@ -1,6 +1,7 @@
 const express = require('express')
 
 const userRouter = require('./app/user/user.routes')
+const authRouter = require('./app/auth/auth.routes')
 
 /**
  * Sets app routes
@@ -12,6 +13,9 @@ function setRoutes(app) {
 
   // User routes
   router.use('/users', userRouter)
+
+  //Auth routes
+  router.use('/auth', authRouter)
 
   // Apply the routes to our application
   app.use('', router);
