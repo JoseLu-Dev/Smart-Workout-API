@@ -7,6 +7,12 @@ class UserController extends BaseController {
       super(UserModel)
     }
 
+    //TODO: extract this to a middleware for user routes
+    get(req, res){
+      req.params.id = req.params.userId
+      super.get()
+    }
+
 }
 
 module.exports = UserController
