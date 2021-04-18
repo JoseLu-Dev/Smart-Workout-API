@@ -38,7 +38,7 @@ describe('Auth tests', () => {
             .expect(409)
     })
 
-    test('Register user and try to login with correct credentials', async () => {
+    test('Register and  login with correct credentials', async () => {
         await api
             .post('/auth/register')
             .send(user)
@@ -50,7 +50,7 @@ describe('Auth tests', () => {
             .expect(400)
     })
 
-    test('Register user and try to login with incorrect password', async () => {
+    test('Register and login with incorrect password', async () => {
         await api
             .post('/auth/register')
             .send(user)
@@ -64,7 +64,7 @@ describe('Auth tests', () => {
             .expect(403)
     })
 
-    test('Register user and try to login with incorrect user', async () => {
+    test('Register and login with incorrect user', async () => {
         await api
             .post('/auth/register')
             .send(user)
@@ -81,5 +81,5 @@ describe('Auth tests', () => {
 
 afterAll(() => {
     mongoose.connection.close()
-    server.close()
+    server.close() 
 })
