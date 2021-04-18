@@ -18,7 +18,7 @@ beforeEach(async () => {
 })
 
 describe('Auth tests', () => {
-    test('Register user and authenticate email', async () => {
+    test('Register user', async () => {
         await api
             .post('/auth/register')
             .send(user)
@@ -38,7 +38,7 @@ describe('Auth tests', () => {
             .expect(409)
     })
 
-    test('Register and  login with correct credentials', async () => {
+    test('Register and  login without confirming email', async () => {
         await api
             .post('/auth/register')
             .send(user)
@@ -86,10 +86,7 @@ describe('Auth tests', () => {
         }
 
         newUser = await new User(user).save()
-        confirmationCode =  await newUser.confirmationCode
-
-        console.log(confirmationCode)
-        console.log(newUser)
+        confirmationCode = await newUser.confirmationCode
 
         await api
             .get(`/auth/${confirmationCode}`)
@@ -100,6 +97,29 @@ describe('Auth tests', () => {
             .get(`/auth/${confirmationCode}`)
             .send(user)
             .expect(404)
+    })
+
+    test('Ensure token is sent on login', async () => {
+        const user = {
+            name: "JoseLuDev",
+            email: "joseludev@gmail.com",
+            password: "securePassword"
+        }
+
+        newUser = await new User(user).save()
+        confirmationCode = await newUser.confirmationCode
+
+        await api
+            .get(`/auth/${confirmationCode}`)
+            .send(user)
+            .expect(200)
+
+        const response = await api
+            .post('/auth/login')
+            .send(user)
+            .expect(200)
+
+        expect(typeof response.body.token).toBe('string')
     })
 })
 
