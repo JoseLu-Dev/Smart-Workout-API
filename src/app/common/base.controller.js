@@ -47,10 +47,11 @@ class BaseController {
         obj.save((err, item) => {
             // 11000 is the code for duplicate key error
             if (err && err.code === 11000) {
-                res.sendStatus(409);
+                return res.sendStatus(409);
             }
             if (err) {
-                return console.error(err);
+                console.error(err);
+                return res.sendStatus(500);
             }
             res.status(200).json(item);
         });
