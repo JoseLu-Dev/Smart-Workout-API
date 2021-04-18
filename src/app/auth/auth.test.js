@@ -18,11 +18,11 @@ beforeEach(async () => {
 })
 
 describe('Auth tests', () => {
-    test('Register user', async () => {
+    test('Register user and authenticate email', async () => {
         await api
             .post('/auth/register')
             .send(user)
-            .expect(200)
+            .expect(201)
             .expect('Content-Type', /application\/json/)
     })
 
@@ -30,7 +30,7 @@ describe('Auth tests', () => {
         await api
             .post('/auth/register')
             .send(user)
-            .expect(200)
+            .expect(201)
 
         await api
             .post('/auth/register')
@@ -42,7 +42,7 @@ describe('Auth tests', () => {
         await api
             .post('/auth/register')
             .send(user)
-            .expect(200)
+            .expect(201)
 
         await api
             .post('/auth/login')
@@ -54,7 +54,7 @@ describe('Auth tests', () => {
         await api
             .post('/auth/register')
             .send(user)
-            .expect(200)
+            .expect(201)
 
         user.password = "wrongPassword"
 
@@ -68,7 +68,7 @@ describe('Auth tests', () => {
         await api
             .post('/auth/register')
             .send(user)
-            .expect(200)
+            .expect(201)
 
         user.name = "wrongName"
 
@@ -77,9 +77,33 @@ describe('Auth tests', () => {
             .send(user)
             .expect(404)
     })
+
+    test('Email verification', async () => {
+        const user = {
+            name: "JoseLuDev",
+            email: "joseludev@gmail.com",
+            password: "securePassword"
+        }
+
+        newUser = await new User(user).save()
+        confirmationCode =  await newUser.confirmationCode
+
+        console.log(confirmationCode)
+        console.log(newUser)
+
+        await api
+            .get(`/auth/${confirmationCode}`)
+            .send(user)
+            .expect(200)
+
+        await api
+            .get(`/auth/${confirmationCode}`)
+            .send(user)
+            .expect(404)
+    })
 })
 
 afterAll(() => {
     mongoose.connection.close()
-    server.close() 
+    server.close()
 })
