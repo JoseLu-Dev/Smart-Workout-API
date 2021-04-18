@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken')
+
 const BaseController = require('../common/base.controller')
 const UserModel = require('../user/user.model')
 
@@ -30,7 +32,7 @@ class UserController extends BaseController {
 
         if (user.status == "Pending") return res.status(400).json({ message: "You must confirm your email before continuing" })
 
-        const token = jwt.sign({ user: user }, process.env.SECRET_TOKEN)
+        const token = await jwt.sign({ user: user }, process.env.SECRET_TOKEN)
         res.status(200).json({ token: token })
     }
 
