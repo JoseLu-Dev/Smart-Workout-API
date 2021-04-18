@@ -4,11 +4,13 @@ const mongoose = require('mongoose')
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -23,8 +25,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: function() {
             let hash = 0;
-            for (let i = 0; i < this.email.length; i++) {
-                hash = this.email.charCodeAt(i) + ((hash << 5) - hash);
+            for (let i = 0; i < this.name.length; i++) {
+                hash = this.name.charCodeAt(i) + ((hash << 5) - hash);
             }
             let res = (hash & 0x00ffffff).toString(16).toUpperCase();
             return "00000".substring(0, 6 - res.length) + res;
