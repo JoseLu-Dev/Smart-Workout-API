@@ -1,5 +1,21 @@
 const cors = require('cors')
-const express = require('express')
+const express = require('express');
+const jwt = require('jsonwebtoken');
+
+/**
+ * Middleware exclude a middleware from a specified route
+ * @param {*} path route to exclude middleware
+ * @param {*} middleware middleware to exclude
+ */
+var excludeMiddlewareFromRoute = function(middleware, path) {
+    return function(req, res, next) {
+        if (req.path.includes(path)) {
+            return next();
+        } else {
+            return middleware(req, res, next);
+        }
+    };
+};
 
 /**
  * Sets the middleware that the app uses
@@ -7,7 +23,7 @@ const express = require('express')
  */
 function setMiddleware(app) {
     // control from what ip to accept request
-    app.use(cors({ origin: 'http://localhost:4200' }))
+    app.use(cors())
 
     // json middleware
     app.use(express.json())
@@ -17,6 +33,7 @@ function setMiddleware(app) {
         console.log(`method: ${req.method}`)
         console.log(`path: ${req.path}`)
         console.log(`body: ${JSON.stringify(req.body)}`)
+        console.log(`Auth header: ${req.headers.authHeader}`)
         next();
     })
 
@@ -28,6 +45,33 @@ function setMiddleware(app) {
         }
         next()
     })
+
+    /**
+     * Middleware that verifies jwt
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    function jsonWebTokenVerification(req, res, next){
+        const authHeader = req.headers.authorization;
+
+        if (authHeader) {
+            const token = authHeader.split(' ')[1];
+
+            jwt.verify(token, process.env.SECRET_TOKEN, { algorithms: ['HS256'] }, (err, decoded) => {
+                if (err) return res.sendStatus(403);
+
+                req.params.userId = decoded.userId;
+                console.log(`User id: ${req.userId}`)
+                next();
+            });
+        } else {
+            res.sendStatus(401);
+        }
+    }
+
+    app.use(excludeMiddlewareFromRoute(jsonWebTokenVerification, '/auth'))
+
 }
 
 module.exports = setMiddleware
