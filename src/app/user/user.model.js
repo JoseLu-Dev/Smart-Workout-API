@@ -56,6 +56,17 @@ const encryptUserPassword = async function (next) {
 userSchema.pre('save', encryptUserPassword)
 
 /**
+ * Transform the user email to lowercase before saving it to the database
+ * @param {*} next 
+ */
+const lowerCaseEmail = async function (next) {
+    const user = this;
+    user.email = user.email.toLowerCase()
+    next()
+}
+userSchema.pre('save', lowerCaseEmail)
+
+/**
  * Compares user password with another passed in the argument
  * @param {*} candidatePassword password to compare with
  * @returns 

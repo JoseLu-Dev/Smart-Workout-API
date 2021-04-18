@@ -96,6 +96,7 @@ class UserController extends BaseController {
      * @param {*} res 
      */
     reSendVerificationEmail = async (req, res) => {
+        req.body.email = req.body.email.toLowerCase()
         let user
         try {
             user = await this.model.findOne({ 'email': req.body.email })
