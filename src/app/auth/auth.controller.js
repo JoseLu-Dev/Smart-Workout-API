@@ -32,7 +32,14 @@ class UserController extends BaseController {
 
         if (user.status == "Pending") return res.status(400).json({ message: "You must confirm your email before continuing" })
 
-        const token = await jwt.sign({ user: user }, process.env.SECRET_TOKEN)
+        const token = jwt.sign(
+            {
+                exp: Math.floor(Date.now() / 1000) + (60 * 60),
+                userId: user._id
+            },
+            process.env.SECRET_TOKEN,
+            { algorithm: 'HS256' })
+
         res.status(200).json({ token: token })
     }
 
@@ -101,7 +108,7 @@ class UserController extends BaseController {
         try {
             user = await this.model.findOne({ 'email': req.body.email })
             if (user == null) return res.status(404).json({ message: 'No account found with this email' })
-            if (user.status == user.schema.path('status').enumValues[1]) return res.status(400).json({ message: 'This email has been already verified'})
+            if (user.status == user.schema.path('status').enumValues[1]) return res.status(400).json({ message: 'This email has been already verified' })
         } catch (err) {
             return res.status(500).json({ message: err.message })
         }
@@ -111,7 +118,7 @@ class UserController extends BaseController {
     }
 }
 
-function sendVerificationEmail(user){
+function sendVerificationEmail(user) {
     if (process.env.NODE_ENV !== 'test') {
         nodemailerService.sendConfirmationEmail(
             user.name,
