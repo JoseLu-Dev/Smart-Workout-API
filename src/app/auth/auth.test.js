@@ -121,6 +121,39 @@ describe('Auth tests', () => {
 
         expect(typeof response.body.token).toBe('string')
     })
+
+    test('Ensure re send verification email route works', async () => {
+        const user = {
+            name: "JoseLuDev",
+            email: "joseludev@gmail.com",
+            password: "securePassword"
+        }
+
+        newUser = await new User(user).save()
+
+        await api
+            .post(`/auth/reSendVerificationEmail`)
+            .send({ email: newUser.email })
+            .expect(200)
+
+        await api
+            .get(`/auth/${newUser.confirmationCode}`)
+            .send(user)
+            .expect(200)
+
+        await api
+            .post(`/auth/reSendVerificationEmail`)
+            .send({ email: newUser.email })
+            .expect(400)
+
+        newUser.email = 'falseEmail@gmail.com'
+
+        await api
+            .post(`/auth/reSendVerificationEmail`)
+            .send({ email: newUser.email })
+            .expect(404)
+
+    })
 })
 
 afterAll(() => {

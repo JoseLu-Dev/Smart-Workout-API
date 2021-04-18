@@ -52,13 +52,7 @@ class UserController extends BaseController {
         try {
             await user.save()
 
-            if (process.env.NODE_ENV !== 'test') {
-                nodemailerService.sendConfirmationEmail(
-                    user.name,
-                    user.email,
-                    user.confirmationCode
-                )
-            }
+            sendVerificationEmail(user)
 
             res.status(201).json({ message: "User was registered successfully! Please check your email to activate your Account" })
 
@@ -94,6 +88,35 @@ class UserController extends BaseController {
         }
 
         res.status(200).json({ message: 'Account Activated' })
+    }
+
+    /**
+     * This function re sends the confirmation email if the email has not been verified
+     * @param {*} req 
+     * @param {*} res 
+     */
+    reSendVerificationEmail = async (req, res) => {
+        let user
+        try {
+            user = await this.model.findOne({ 'email': req.body.email })
+            if (user == null) return res.status(404).json({ message: 'No account found with this email' })
+            if (user.status == user.schema.path('status').enumValues[1]) return res.status(400).json({ message: 'This email has been already verified'})
+        } catch (err) {
+            return res.status(500).json({ message: err.message })
+        }
+
+        sendVerificationEmail(user)
+        return res.status(200).json({ message: 'Verification email re sent successfully' })
+    }
+}
+
+function sendVerificationEmail(user){
+    if (process.env.NODE_ENV !== 'test') {
+        nodemailerService.sendConfirmationEmail(
+            user.name,
+            user.email,
+            user.confirmationCode
+        )
     }
 }
 
