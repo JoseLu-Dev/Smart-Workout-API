@@ -13,8 +13,11 @@ setExpressVariables(app)
 setRoutes(app)
 
 // listen to port
-app.listen(app.get('port'), () => {
+const server = app.listen(app.get('port'), () => {
   console.log(`Server Started on port ${app.get('port')}`)
 })
 
-module.exports = app
+module.exports = {
+  app,
+  server
+}
