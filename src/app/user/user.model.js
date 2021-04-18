@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     },
     confirmationCode: {
         type: String,
-        default: function() {
+        default: function () {
             let hash = 0;
             for (let i = 0; i < this.name.length; i++) {
                 hash = this.name.charCodeAt(i) + ((hash << 5) - hash);
@@ -54,5 +54,21 @@ const encryptUserPassword = async function (next) {
     next()
 }
 userSchema.pre('save', encryptUserPassword)
+
+/**
+ * Compares user password with another passed in the argument
+ * @param {*} candidatePassword password to compare with
+ * @returns 
+ */
+const compareIfSamePassword = async function (candidatePassword) {
+    const samePassword = await bcrypt.compare(candidatePassword, this.password);
+    if (samePassword) return true;
+    return false;
+}
+
+userSchema.method(
+    'compareIfSamePassword',
+    compareIfSamePassword
+)
 
 module.exports = mongoose.model('User', userSchema)
