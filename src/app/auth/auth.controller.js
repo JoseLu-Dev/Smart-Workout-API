@@ -32,6 +32,7 @@ class UserController extends BaseController {
 
         if (user.status == "Pending") return res.status(400).json({ message: "You must confirm your email before continuing" })
 
+        //TODO: extract jwt config to a common file
         const token = jwt.sign(
             {
                 exp: Math.floor(Date.now() / 1000) + (60 * 60),

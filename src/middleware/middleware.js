@@ -58,6 +58,7 @@ function setMiddleware(app) {
         if (authHeader) {
             const token = authHeader.split(' ')[1];
 
+            //TODO: extract jwt config to a common file
             jwt.verify(token, process.env.SECRET_TOKEN, { algorithms: ['HS256'] }, (err, decoded) => {
                 if (err) return res.sendStatus(403);
 
