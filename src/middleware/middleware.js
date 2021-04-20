@@ -3,7 +3,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 
 /**
- * Middleware exclude a middleware from a specified route
+ * Middleware to exclude a middleware from a specified route
  * @param {*} path route to exclude middleware
  * @param {*} middleware middleware to exclude
  */
