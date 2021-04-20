@@ -36,6 +36,34 @@ describe('Get user data', () => {
             .expect('Content-Type', /application\/json/)
     })
 
+    test('Ensure you cannot get user data without sending a token', async () => {
+        const user = {
+            name: "JoseLuDev",
+            email: "joseludev@gmail.com",
+            password: "securePassword",
+            status: "Active"
+        }
+
+        newUser = await new User(user).save()
+
+        const response = await api
+            .post('/auth/login')
+            .send(user)
+            .expect(200)
+
+        authToken = response.body.token
+
+        await api
+            .get('/users')
+            .set('Authorization', 'bearer ' + authToken + "invalid")
+            .expect(403)
+
+        await api
+            .get('/users')
+            .expect(401)
+
+    })
+
 })
 
 afterAll(() => {
