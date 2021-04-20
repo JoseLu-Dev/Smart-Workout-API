@@ -39,7 +39,7 @@ class UserController extends BaseController {
                 userId: user._id
             },
             process.env.SECRET_TOKEN,
-            jwtConfig.algorithms
+            { algorithm: jwtConfig.algorithm },
         )
 
         res.status(200).json({ token: token })

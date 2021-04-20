@@ -82,7 +82,7 @@ function setMiddleware(app) {
             jwt.verify(
                 token,
                 process.env.SECRET_TOKEN,
-                { algorithms: jwtConfig.algorithms },
+                { algorithm: jwtConfig.algorithm },
                 (err, decoded) => {
                     if (err) return res.sendStatus(403);
 
