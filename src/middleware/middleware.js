@@ -22,29 +22,50 @@ var excludeMiddlewareFromRoute = function(middleware, path) {
  * @param {*} app Express app
  */
 function setMiddleware(app) {
-    // control from what ip to accept request
+    
+    /**
+     * Enable api to receive calls from every ip
+     */
     app.use(cors())
 
-    // json middleware
+    /**
+     * Enable express to receive json in body calls
+     */
     app.use(express.json())
 
-    // log middleware
-    app.use((req, res, next) => {
+    /**
+     * Middleware that logs in console http calls information
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     */
+    function httpCallLogger (req, res, next){
         console.log(`method: ${req.method}`)
         console.log(`path: ${req.path}`)
         console.log(`body: ${JSON.stringify(req.body)}`)
         console.log(`Auth header: ${req.headers.authHeader}`)
         next();
-    })
+    }
 
-    // simple error handling middleware
-    app.use((err, req, res, next) => {
+    app.use(httpCallLogger)
+
+    /**
+     * Middleware to handle errors in a simple way
+     * @param {*} err 
+     * @param {*} req 
+     * @param {*} res 
+     * @param {*} next 
+     * @returns 
+     */
+    function simpleErrorHandling (err, req, res, next){
         if (err) {
             console.error(err.stack)
             return res.status(500).send('Something went wrong')
         }
         next()
-    })
+    }
+
+    app.use(simpleErrorHandling)
 
     /**
      * Middleware that verifies jwt
