@@ -5,21 +5,21 @@ const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     password: {
         type: String,
-        required: true
+        required: true,
     },
     status: {
         type: String,
         enum: ['Pending', 'Active'],
-        default: 'Pending'
+        default: 'Pending',
     },
     confirmationCode: {
         type: String,
@@ -28,20 +28,20 @@ const userSchema = new mongoose.Schema({
             for (let i = 0; i < this.name.length; i++) {
                 hash = this.name.charCodeAt(i) + ((hash << 5) - hash);
             }
-            let res = (hash & 0x00ffffff).toString(16).toUpperCase();
-            return "00000".substring(0, 6 - res.length) + res;
-        }
+            const res = (hash & 0x00ffffff).toString(16).toUpperCase();
+            return '00000'.substring(0, 6 - res.length) + res;
+        },
     },
     registerDate: {
         type: Date,
         required: true,
-        default: Date.now
+        default: Date.now,
     },
 })
 
 /**
  * Encrypts the user password using bcrypt before saving it to the database
- * @param {*} next 
+ * @param {*} next
  */
 const encryptUserPassword = async function (next) {
     const user = this;
@@ -57,7 +57,7 @@ userSchema.pre('save', encryptUserPassword)
 
 /**
  * Transform the user email to lowercase before saving it to the database
- * @param {*} next 
+ * @param {*} next
  */
 const lowerCaseEmail = async function (next) {
     const user = this;
@@ -69,7 +69,7 @@ userSchema.pre('save', lowerCaseEmail)
 /**
  * Compares user password with another passed in the argument
  * @param {*} candidatePassword password to compare with
- * @returns 
+ * @returns
  */
 const compareIfSamePassword = async function (candidatePassword) {
     const samePassword = await bcrypt.compare(candidatePassword, this.password);
@@ -79,7 +79,7 @@ const compareIfSamePassword = async function (candidatePassword) {
 
 userSchema.method(
     'compareIfSamePassword',
-    compareIfSamePassword
+    compareIfSamePassword,
 )
 
 module.exports = mongoose.model('User', userSchema)

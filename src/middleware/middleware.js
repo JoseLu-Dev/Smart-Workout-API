@@ -9,13 +9,12 @@ const jwtConfig = require('../jwt-config')
  * @param {*} path route to exclude middleware
  * @param {*} middleware middleware to exclude
  */
-var excludeMiddlewareFromRoute = function (middleware, path) {
+const excludeMiddlewareFromRoute = function (middleware, path) {
     return function (req, res, next) {
         if (req.path.includes(path)) {
             return next();
-        } else {
-            return middleware(req, res, next);
         }
+            return middleware(req, res, next);
     };
 };
 
@@ -24,7 +23,6 @@ var excludeMiddlewareFromRoute = function (middleware, path) {
  * @param {*} app Express app
  */
 function setMiddleware(app) {
-
     /**
      * Enable api to receive calls from every ip
      */
@@ -37,9 +35,9 @@ function setMiddleware(app) {
 
     /**
      * Middleware that logs in console http calls information
-     * @param {*} req 
-     * @param {*} res 
-     * @param {*} next 
+     * @param {*} req
+     * @param {*} res
+     * @param {*} next
      */
     function httpCallLogger(req, res, next) {
         console.log(`method: ${req.method}`)
@@ -53,11 +51,11 @@ function setMiddleware(app) {
 
     /**
      * Middleware to handle errors in a simple way
-     * @param {*} err 
-     * @param {*} req 
-     * @param {*} res 
-     * @param {*} next 
-     * @returns 
+     * @param {*} err
+     * @param {*} req
+     * @param {*} res
+     * @param {*} next
+     * @returns
      */
     function simpleErrorHandling(err, req, res, next) {
         if (err) {
@@ -71,9 +69,9 @@ function setMiddleware(app) {
 
     /**
      * Middleware that verifies jwt
-     * @param {*} req 
-     * @param {*} res 
-     * @param {*} next 
+     * @param {*} req
+     * @param {*} res
+     * @param {*} next
      */
     function jsonWebTokenVerification(req, res, next) {
         const authHeader = req.headers.authorization;
@@ -86,20 +84,19 @@ function setMiddleware(app) {
                 process.env.SECRET_TOKEN,
                 { algorithms: jwtConfig.algorithms },
                 (err, decoded) => {
-
                     if (err) return res.sendStatus(403);
 
                     req.params.userId = decoded.userId;
                     console.log(`User id: ${req.userId}`)
                     next();
-                });
+                },
+);
         } else {
             res.sendStatus(401);
         }
     }
 
     app.use(excludeMiddlewareFromRoute(jsonWebTokenVerification, '/auth'))
-
 }
 
 module.exports = setMiddleware

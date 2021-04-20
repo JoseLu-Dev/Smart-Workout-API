@@ -8,13 +8,12 @@ const authRouter = require('./app/auth/auth.routes')
  * @param {*} app express app
  */
 function setRoutes(app) {
-
   const router = express.Router();
 
   // User routes
   router.use('/users', userRouter)
 
-  //Auth routes
+  // Auth routes
   router.use('/auth', authRouter)
 
   // Apply the routes to our application

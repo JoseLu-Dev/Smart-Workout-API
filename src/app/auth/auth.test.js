@@ -4,13 +4,13 @@ const { server } = require('../../server')
 const User = require('../user/user.model')
 
 const {
-    api
+    api,
 } = require('../common/helpers.testing')
 
 const user = {
-    name: "JoseLuDev",
-    email: "joseludev@gmail.com",
-    password: "securePassword"
+    name: 'JoseLuDev',
+    email: 'joseludev@gmail.com',
+    password: 'securePassword',
 }
 
 beforeEach(async () => {
@@ -56,7 +56,7 @@ describe('Auth tests', () => {
             .send(user)
             .expect(201)
 
-        user.password = "wrongPassword"
+        user.password = 'wrongPassword'
 
         await api
             .post('/auth/login')
@@ -70,7 +70,7 @@ describe('Auth tests', () => {
             .send(user)
             .expect(201)
 
-        user.name = "wrongName"
+        user.name = 'wrongName'
 
         await api
             .post('/auth/login')
@@ -80,9 +80,9 @@ describe('Auth tests', () => {
 
     test('Email verification', async () => {
         const user = {
-            name: "JoseLuDev",
-            email: "joseludev@gmail.com",
-            password: "securePassword"
+            name: 'JoseLuDev',
+            email: 'joseludev@gmail.com',
+            password: 'securePassword',
         }
 
         newUser = await new User(user).save()
@@ -101,9 +101,9 @@ describe('Auth tests', () => {
 
     test('Ensure token is sent on login', async () => {
         const user = {
-            name: "JoseLuDev",
-            email: "joseludev@gmail.com",
-            password: "securePassword"
+            name: 'JoseLuDev',
+            email: 'joseludev@gmail.com',
+            password: 'securePassword',
         }
 
         newUser = await new User(user).save()
@@ -124,15 +124,15 @@ describe('Auth tests', () => {
 
     test('Ensure re send verification email route works', async () => {
         const user = {
-            name: "JoseLuDev",
-            email: "joseludev@gmail.com",
-            password: "securePassword"
+            name: 'JoseLuDev',
+            email: 'joseludev@gmail.com',
+            password: 'securePassword',
         }
 
         newUser = await new User(user).save()
 
         await api
-            .post(`/auth/reSendVerificationEmail`)
+            .post('/auth/reSendVerificationEmail')
             .send({ email: newUser.email })
             .expect(200)
 
@@ -142,17 +142,16 @@ describe('Auth tests', () => {
             .expect(200)
 
         await api
-            .post(`/auth/reSendVerificationEmail`)
+            .post('/auth/reSendVerificationEmail')
             .send({ email: newUser.email })
             .expect(400)
 
         newUser.email = 'falseEmail@gmail.com'
 
         await api
-            .post(`/auth/reSendVerificationEmail`)
+            .post('/auth/reSendVerificationEmail')
             .send({ email: newUser.email })
             .expect(404)
-
     })
 })
 

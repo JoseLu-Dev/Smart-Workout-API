@@ -5,6 +5,7 @@ const setExpressVariables = require('./expressVariables')
 const setRoutes = require('./routes')
 
 const express = require('express')
+
 const app = express()
 
 connectToDatabase()
@@ -19,5 +20,5 @@ const server = app.listen(app.get('port'), () => {
 
 module.exports = {
   app,
-  server
+  server,
 }

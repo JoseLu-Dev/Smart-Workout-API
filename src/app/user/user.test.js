@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 const { server } = require('../../server')
 
-const User = require('../user/user.model')
+const User = require('./user.model')
 
 const {
-    api
+    api,
 } = require('../common/helpers.testing')
 
 beforeEach(async () => {
@@ -14,10 +14,10 @@ beforeEach(async () => {
 describe('Get user data', () => {
     test('Ensure you can get user data sending a valid token', async () => {
         const user = {
-            name: "JoseLuDev",
-            email: "joseludev@gmail.com",
-            password: "securePassword",
-            status: "Active"
+            name: 'JoseLuDev',
+            email: 'joseludev@gmail.com',
+            password: 'securePassword',
+            status: 'Active',
         }
 
         newUser = await new User(user).save()
@@ -38,10 +38,10 @@ describe('Get user data', () => {
 
     test('Ensure you cannot get user data without sending a token', async () => {
         const user = {
-            name: "JoseLuDev",
-            email: "joseludev@gmail.com",
-            password: "securePassword",
-            status: "Active"
+            name: 'JoseLuDev',
+            email: 'joseludev@gmail.com',
+            password: 'securePassword',
+            status: 'Active',
         }
 
         newUser = await new User(user).save()
@@ -55,15 +55,13 @@ describe('Get user data', () => {
 
         await api
             .get('/users')
-            .set('Authorization', 'bearer ' + authToken + "invalid")
+            .set('Authorization', 'bearer ' + authToken + 'invalid')
             .expect(403)
 
         await api
             .get('/users')
             .expect(401)
-
     })
-
 })
 
 afterAll(() => {

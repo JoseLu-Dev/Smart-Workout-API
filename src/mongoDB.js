@@ -4,7 +4,6 @@ const mongoose = require('mongoose')
  * Sets the connection to the database
  */
 function connectToDatabase() {
-
   const { DATABASE_URL, DATABASE_URL_TEST, NODE_ENV } = process.env
 
   const connectionString = NODE_ENV == 'test'
@@ -14,7 +13,7 @@ function connectToDatabase() {
   mongoose.connect(connectionString, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   })
   const db = mongoose.connection
   db.on('error', (error) => console.error(error))
