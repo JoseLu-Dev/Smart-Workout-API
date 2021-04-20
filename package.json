@@ -7,7 +7,8 @@
     "dev": "cross-env NODE_ENV=development nodemon src/server.js",
     "start": "cross-env NODE_ENV=production node src/server.js",
     "test": "cross-env NODE_ENV=test jest --runInBand --config jest.config.js",
-    "test:watch": "npm run test -- --watch "
+    "test:watch": "npm run test -- --watch ",
+    "report": "jscpd src"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jscpd": "^3.3.25",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.4",
     "nodemailer": "^6.5.0"

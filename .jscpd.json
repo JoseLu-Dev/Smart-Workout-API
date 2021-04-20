@@ -1,0 +1,10 @@
+{
+    "threshold": 10,
+    "reporters": [
+        "html",
+        "console"
+    ],
+    "format": "javascript",
+    "output": "reports",
+    "mode": "strict"
+}
