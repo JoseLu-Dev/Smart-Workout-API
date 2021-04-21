@@ -17,19 +17,23 @@ class UserController extends BaseController {
      * Tries to log in the user given the credentials sent in req.body
      * @param {*} req 
      * @param {*} res 
+     * @return {code} 200 sends auth token
+     * @return {code} 400 email not confirmed
+     * @return {code} 403 invalid credentials
+     * @return {code} 500 server error
      */
     login = async (req, res) => {
         let user
         let samePassword
         try {
             user = await this.model.findOne({ name: req.body.name })
-            if (!user) return res.status(404).json({ error: "User not found" })
+            if (!user) return res.status(403).json({ message: "Invalid credentials" })
 
             samePassword = await user.compareIfSamePassword(req.body.password)
         } catch (error) {
             return res.status(500).json({ error: error.message })
         }
-        if (!samePassword) return res.status(403).json({ message: "Invalid password" })
+        if (!samePassword) return res.status(403).json({ message: "Invalid credentials" })
 
         if (user.status == "Pending") return res.status(400).json({ message: "You must confirm your email before continuing" })
 
@@ -49,6 +53,9 @@ class UserController extends BaseController {
      * Tries to register the user given the credentials sent in req.body
      * @param {*} req 
      * @param {*} res 
+     * @return {code} 201 created user
+     * @return {code} 409 duplicated user
+     * @return {code} 500 server error
      */
     signup = async (req, res) => {
 
@@ -77,6 +84,9 @@ class UserController extends BaseController {
      * 
      * @param {*} req 
      * @param {*} res 
+     * @return {code} 200 account activated
+     * @return {code} 404 not suitable for verification
+     * @return {code} 500 server error
      */
     verifyUser = async (req, res) => {
         let user
@@ -102,7 +112,11 @@ class UserController extends BaseController {
     /**
      * This function re sends the confirmation email if the email has not been verified
      * @param {*} req 
-     * @param {*} res 
+     * @param {*} res
+     * @return {code} 200 resend verification email
+     * @return {code} 400 already verified
+     * @return {code} 404 no email registered
+     * @return {code} 500 server error
      */
     reSendVerificationEmail = async (req, res) => {
         req.body.email = req.body.email.toLowerCase()
