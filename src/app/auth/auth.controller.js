@@ -26,6 +26,7 @@ class UserController extends BaseController {
         let user
         let samePassword
         try {
+            req.body.name = req.body.name.toLowerCase()
             user = await this.model.findOne({ name: req.body.name })
             if (!user) return res.status(403).json({ message: "Invalid credentials" })
 

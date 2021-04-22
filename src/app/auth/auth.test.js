@@ -75,7 +75,7 @@ describe('Auth tests', () => {
         await api
             .post('/auth/login')
             .send(user)
-            .expect(404)
+            .expect(403)
     })
 
     test('Email verification', async () => {
