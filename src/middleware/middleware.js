@@ -14,7 +14,7 @@ const excludeMiddlewareFromRoute = function (middleware, path) {
         if (req.path.includes(path)) {
             return next();
         }
-            return middleware(req, res, next);
+        return middleware(req, res, next);
     };
 };
 
@@ -40,10 +40,12 @@ function setMiddleware(app) {
      * @param {*} next
      */
     function httpCallLogger(req, res, next) {
-        console.log(`method: ${req.method}`)
-        console.log(`path: ${req.path}`)
-        console.log(`body: ${JSON.stringify(req.body)}`)
-        console.log(`Auth header: ${req.headers.authHeader}`)
+        if (process.env.NODE_ENV != 'test') {
+            console.log(`method: ${req.method}`)
+            console.log(`path: ${req.path}`)
+            console.log(`body: ${JSON.stringify(req.body)}`)
+            console.log(`Auth header: ${req.headers.authHeader}`)
+        }
         next();
     }
 
@@ -87,10 +89,10 @@ function setMiddleware(app) {
                     if (err) return res.sendStatus(403);
 
                     req.params.userId = decoded.userId;
-                    console.log(`User id: ${req.userId}`)
+
                     next();
                 },
-);
+            );
         } else {
             res.sendStatus(401);
         }
