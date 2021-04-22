@@ -7,7 +7,7 @@ const authController = new AuthController()
 // Auth
 router.route('/login').post(authController.login)
 router.route('/register').post(authController.signup)
-router.route('/:confirmationCode').get(authController.verifyUser)
 router.route('/reSendVerificationEmail').post(authController.reSendVerificationEmail)
+router.route('/verifyUser').post(authController.verifyUser)
 
 module.exports = router

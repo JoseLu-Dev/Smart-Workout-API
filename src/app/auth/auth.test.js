@@ -89,13 +89,13 @@ describe('Auth tests', () => {
         confirmationCode = await newUser.confirmationCode
 
         await api
-            .get(`/auth/${confirmationCode}`)
-            .send(user)
+            .post('/auth/verifyUser')
+            .send({ 'confirmationCode': newUser.confirmationCode })
             .expect(200)
 
         await api
-            .get(`/auth/${confirmationCode}`)
-            .send(user)
+            .post('/auth/verifyUser')
+            .send({ 'confirmationCode': newUser.confirmationCode })
             .expect(404)
     })
 
@@ -110,8 +110,8 @@ describe('Auth tests', () => {
         confirmationCode = await newUser.confirmationCode
 
         await api
-            .get(`/auth/${confirmationCode}`)
-            .send(user)
+            .post('/auth/verifyUser')
+            .send({ 'confirmationCode': newUser.confirmationCode })
             .expect(200)
 
         const response = await api
@@ -131,14 +131,16 @@ describe('Auth tests', () => {
 
         newUser = await new User(user).save()
 
-        await api
+        const res = await api
             .post('/auth/reSendVerificationEmail')
             .send({ email: newUser.email })
             .expect(200)
 
+        console.log('RES ' + res)
+
         await api
-            .get(`/auth/${newUser.confirmationCode}`)
-            .send(user)
+            .post('/auth/verifyUser')
+            .send({ 'confirmationCode': newUser.confirmationCode })
             .expect(200)
 
         await api

@@ -6,7 +6,7 @@ const UserModel = require('../user/user.model')
 
 const nodemailerService = require("../services/nodemailer.service")
 
-class UserController extends BaseController {
+class AuthController extends BaseController {
 
     constructor() {
         super(UserModel)
@@ -92,7 +92,7 @@ class UserController extends BaseController {
     verifyUser = async (req, res) => {
         let user
         try {
-            user = await this.model.findOne({ 'confirmationCode': req.params.confirmationCode })
+            user = await this.model.findOne({ 'confirmationCode': req.body.confirmationCode })
             if (user == null) return res.status(404).json({ message: 'This Account is not suitable for Activation' })
         } catch (err) {
             return res.status(500).json({ message: err.message })
@@ -124,6 +124,8 @@ class UserController extends BaseController {
         let user
         try {
             user = await this.model.findOne({ 'email': req.body.email })
+            console.log(user)
+            console.log(req.body)
             if (user == null) return res.status(404).json({ message: 'No account found with this email' })
             if (user.status == user.schema.path('status').enumValues[1]) return res.status(400).json({ message: 'This email has been already verified' })
         } catch (err) {
@@ -145,4 +147,4 @@ function sendVerificationEmail(user) {
     }
 }
 
-module.exports = UserController
+module.exports = AuthController
