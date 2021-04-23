@@ -25,7 +25,7 @@ module.exports.sendConfirmationEmail = (name, email, confirmationCode) => {
         html: `<h1>Email Confirmation</h1>
             <h2>Hello ${name}</h2>
             <p>Thank you for using Training Logger App. Please confirm your email by clicking on the following link</p>
-            <a href=${process.env.SERVER_URL}/auth/${confirmationCode}>Click here</a>
+            <a href=${process.env.FRONTEND_URL}/verification;code=${confirmationCode}>Click here</a>
             </div>`,
     }).catch((err) => console.log(err));
 };
