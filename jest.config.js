@@ -1,5 +1,5 @@
 module.exports = {
     verbose: true,
     testEnvironment: 'node',
-    silent: true
+    silent: true,
 }
