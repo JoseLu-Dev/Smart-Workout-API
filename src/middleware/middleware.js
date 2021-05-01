@@ -44,7 +44,7 @@ function setMiddleware(app) {
             console.log(`method: ${req.method}`)
             console.log(`path: ${req.path}`)
             console.log(`body: ${JSON.stringify(req.body)}`)
-            console.log(`Auth header: ${req.headers.authHeader}`)
+            console.log(`Auth header: ${req.headers.authorization}`)
         }
         next();
     }
