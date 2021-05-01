@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 const jwtConfig = require('../../jwt-config')
 
 const BaseController = require('../common/base.controller')
-const UserModel = require('../user/user.model')
+const UserModel = require('../users/users.model')
 
 const nodemailerService = require("../services/nodemailer.service")
 

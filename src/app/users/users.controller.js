@@ -1,9 +1,9 @@
 const BaseController = require('../common/base.controller')
-const UserModel = require('./user.model')
+const UsersModel = require('./users.model')
 
-class UserController extends BaseController {
+class UsersController extends BaseController {
     constructor() {
-      super(UserModel)
+      super(UsersModel)
     }
 
     // TODO: extract this to a middleware for user routes
@@ -13,4 +13,4 @@ class UserController extends BaseController {
     }
 }
 
-module.exports = UserController
+module.exports = UsersController

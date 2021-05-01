@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { server } = require('../../server')
 
-const User = require('./user.model')
+const User = require('./users.model')
 
 const {
     api,
