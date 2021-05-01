@@ -16,7 +16,7 @@ const exercisesSchema = new mongoose.Schema({
         type: String,
     },
     bodyWeight: {
-        type: boolean,
+        type: Boolean,
     },
 })
 
@@ -29,6 +29,18 @@ const lowerCaseName = async function (next) {
     user.name = exercise.name.toLowerCase()
     next()
 }
-userSchema.pre('save', lowerCaseName)
+exercisesSchema.pre('save', lowerCaseName)
+
+/**
+ * Remove _id and __v from the object before converting it to json
+ */
+exercisesSchema.set('toJSON', {
+    transform: (documents, returnedObject) => {
+        // eslint-disable-next-line no-param-reassign
+        delete returnedObject._id
+        // eslint-disable-next-line no-param-reassign
+        delete returnedObject.__v
+    },
+})
 
 module.exports = mongoose.model('Exercises', exercisesSchema)
