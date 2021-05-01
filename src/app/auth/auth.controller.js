@@ -2,14 +2,14 @@ const jwt = require('jsonwebtoken')
 const jwtConfig = require('../../jwt-config')
 
 const BaseController = require('../common/base.controller')
-const UserModel = require('../users/users.model')
+const UsersModel = require('../users/users.model')
 
 const nodemailerService = require("../services/nodemailer.service")
 
 class AuthController extends BaseController {
 
     constructor() {
-        super(UserModel)
+        super(UsersModel)
     }
 
 
@@ -40,7 +40,6 @@ class AuthController extends BaseController {
 
         const token = jwt.sign(
             {
-                exp: jwtConfig.exp,
                 userId: user._id
             },
             process.env.SECRET_TOKEN,
