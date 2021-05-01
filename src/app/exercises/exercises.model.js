@@ -20,4 +20,15 @@ const exercisesSchema = new mongoose.Schema({
     },
 })
 
+/**
+ * Transform the name to lowercase before saving it to the database
+ * @param {*} next
+ */
+const lowerCaseName = async function (next) {
+    const exercise = this;
+    user.name = exercise.name.toLowerCase()
+    next()
+}
+userSchema.pre('save', lowerCaseName)
+
 module.exports = mongoose.model('Exercises', exercisesSchema)
