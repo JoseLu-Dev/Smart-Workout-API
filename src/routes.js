@@ -1,7 +1,8 @@
 const express = require('express')
 
-const userRouter = require('./app/users/users.routes')
+const usersRouter = require('./app/users/users.routes')
 const authRouter = require('./app/auth/auth.routes')
+const exercisesRoutes = require('./app/exercises/exercises.routes')
 
 /**
  * Sets app routes
@@ -10,11 +11,14 @@ const authRouter = require('./app/auth/auth.routes')
 function setRoutes(app) {
   const router = express.Router();
 
-  // User routes
-  router.use('/users', userRouter)
-
   // Auth routes
   router.use('/auth', authRouter)
+
+  // User routes
+  router.use('/users', usersRouter)
+
+  // Exercises routes
+  router.use('/exercises', exercisesRoutes)
 
   // Apply the routes to our application
   app.use('', router);
