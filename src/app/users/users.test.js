@@ -4,7 +4,7 @@ const { server } = require('../../server')
 const User = require('./users.model')
 
 const {
-    api,
+    api, getValidToken,
 } = require('../common/helpers.testing')
 
 beforeEach(async () => {
@@ -13,21 +13,7 @@ beforeEach(async () => {
 
 describe('Get user data', () => {
     test('Ensure you can get user data sending a valid token', async () => {
-        const user = {
-            name: 'JoseLuDev',
-            email: 'joseludev@gmail.com',
-            password: 'securePassword',
-            status: 'Active',
-        }
-
-        newUser = await new User(user).save()
-
-        const response = await api
-            .post('/auth/login')
-            .send(user)
-            .expect(200)
-
-        authToken = response.body.token
+        const authToken = await getValidToken()
 
         await api
             .get('/users')
@@ -37,21 +23,7 @@ describe('Get user data', () => {
     })
 
     test('Ensure you cannot get user data without sending a token', async () => {
-        const user = {
-            name: 'JoseLuDev',
-            email: 'joseludev@gmail.com',
-            password: 'securePassword',
-            status: 'Active',
-        }
-
-        newUser = await new User(user).save()
-
-        const response = await api
-            .post('/auth/login')
-            .send(user)
-            .expect(200)
-
-        authToken = response.body.token
+        const authToken = await getValidToken()
 
         await api
             .get('/users')
