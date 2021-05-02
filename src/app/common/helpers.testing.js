@@ -5,7 +5,7 @@ const User = require('../users/users.model')
 
 const api = supertest(app)
 
-const getValidToken = async () => {
+const getValidTokenAndUserId = async () => {
     await User.deleteMany({})
 
     const user = {
@@ -22,13 +22,16 @@ const getValidToken = async () => {
         .send(user)
         .expect(200)
 
-    const authToken = response.body.token
+    const userInfo = {
+        id: undefined,
+        token: undefined,
+    }
+    userInfo.id = newUser.id
+    userInfo.token = response.body.token
 
-    return authToken
+    return userInfo
 }
 
 module.exports = {
-    api, getValidToken,
+    api, getValidTokenAndUserId,
 }
-
-// mothod to login user and get jwt token to use it in http calls
