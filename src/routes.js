@@ -3,6 +3,7 @@ const express = require('express')
 const usersRouter = require('./app/users/users.routes')
 const authRouter = require('./app/auth/auth.routes')
 const exercisesRoutes = require('./app/exercises/exercises.routes')
+const daysRouter = require('./app/days/days.routes')
 
 /**
  * Sets app routes
@@ -19,6 +20,9 @@ function setRoutes(app) {
 
   // Exercises routes
   router.use('/exercises', exercisesRoutes)
+
+  // Days routes
+  router.use('/days', daysRouter)
 
   // Apply the routes to our application
   app.use('', router);
