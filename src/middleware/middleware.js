@@ -88,7 +88,7 @@ function setMiddleware(app) {
                 (err, decoded) => {
                     if (err) return res.sendStatus(403);
 
-                    req.params.userId = decoded.userId;
+                    req.userId = decoded.userId;
 
                     next();
                 },
