@@ -17,8 +17,8 @@ class ExercisesController extends BaseController {
         let firstDay
         let lastDay
         try {
-            firstDay = new Date(req.params.year, req.params.month, 1)
-            lastDay = new Date(req.params.year, req.params.month + 1, 1)
+            firstDay = this.createDate(req.params.year, req.params.month, 1)
+            lastDay = this.createDate(req.params.year, new Number(req.params.month) + 1, 1)
         } catch (err) {
             console.log(err)
             res.status(400).json({ error: err.message })
@@ -28,7 +28,7 @@ class ExercisesController extends BaseController {
         try {
             days = await this.model.find(
                 {
-                    userId: req.params.userId,
+                    userId: req.userId,
                     date: { $gte: firstDay, $lt: lastDay }
                 })
         } catch (err) {
@@ -36,6 +36,13 @@ class ExercisesController extends BaseController {
             res.status(400).json({ error: err.message })
         }
         res.status(200).json(days)
+    }
+
+    createDate(year, month, day ){
+        month = month > 9 ? month : `0${month}`
+        day = day > 9 ? day : `0${day}`
+
+        return new Date(`${year}-${month}-${day}`)
     }
 }
 

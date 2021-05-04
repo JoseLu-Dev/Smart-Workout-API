@@ -8,6 +8,6 @@ const daysController = new DaysController()
 /**
  * Two parameters for same route
  */
-router.route('/:year/:month').get(daysController.getAll);
+router.route('/:year/:month').get(daysController.getByYearAndMonth);
 
 module.exports = router

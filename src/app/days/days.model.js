@@ -34,8 +34,12 @@ const daysSchema = new mongoose.Schema({
  * @param {*} next
  */
 const lowerCaseName = async function (next) {
-    const exercise = this;
-    user.name = exercise.name.toLowerCase()
+    const day = this;
+    // eslint-disable-next-line no-restricted-syntax
+    for (const training of day.trainings) {
+        training.name = training.name.toLowerCase()
+    }
+
     next()
 }
 daysSchema.pre('save', lowerCaseName)
