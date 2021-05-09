@@ -6,8 +6,9 @@ const daysController = new DaysController()
 
 // Days
 /**
- * Two parameters for same route
- */
+ * Two, Three parameters for same route
+*/
+router.route('/:year/:month/:day').get(daysController.getSingleDay);
 router.route('/:year/:month').get(daysController.getByYearAndMonth);
 
 module.exports = router

@@ -38,7 +38,33 @@ class ExercisesController extends BaseController {
         res.status(200).json(days)
     }
 
-    createDate(year, month, day ){
+    getSingleDay = async (req, res) => {
+        let firstDay
+        let nextDay
+        try {
+            firstDay = this.createDate(req.params.year, req.params.month, req.params.day)
+            nextDay = this.createDate(req.params.year, req.params.month, new Number(req.params.day) + 1)
+        } catch (err) {
+            console.log(err)
+            res.status(400).json({ error: err.message })
+        }
+console.log(firstDay)
+console.log(nextDay)
+        let day
+        try {
+            day = await this.model.findOne(
+                {
+                    userId: req.userId,
+                    date: { $gte: firstDay, $lt: nextDay }
+                })
+        } catch (err) {
+            console.log(err)
+            res.status(400).json({ error: err.message })
+        }
+        res.status(200).json(day)
+    }
+
+    createDate(year, month, day) {
         month = month > 9 ? month : `0${month}`
         day = day > 9 ? day : `0${day}`
 
