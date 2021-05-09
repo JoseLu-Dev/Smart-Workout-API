@@ -18,7 +18,8 @@ class ExercisesController extends BaseController {
         let lastDay
         try {
             firstDay = this.createDate(req.params.year, req.params.month, 1)
-            lastDay = this.createDate(req.params.year, new Number(req.params.month) + 1, 1)
+            const year = new Number(req.params.month) == 12 ?  new Number(req.params.year) + 1 : req.params.year
+            lastDay = this.createDate(year, new Number(req.params.month) + 1, 1)
         } catch (err) {
             console.log(err)
             res.status(400).json({ error: err.message })
@@ -43,13 +44,13 @@ class ExercisesController extends BaseController {
         let nextDay
         try {
             firstDay = this.createDate(req.params.year, req.params.month, req.params.day)
-            nextDay = this.createDate(req.params.year, req.params.month, new Number(req.params.day) + 1)
+            const year = new Number(req.params.month) == 12 ?  new Number(req.params.year) + 1 : req.params.year
+            nextDay = this.createDate(year, req.params.month, new Number(req.params.day) + 1)
         } catch (err) {
             console.log(err)
             res.status(400).json({ error: err.message })
         }
-console.log(firstDay)
-console.log(nextDay)
+
         let day
         try {
             day = await this.model.findOne(
@@ -65,6 +66,8 @@ console.log(nextDay)
     }
 
     createDate(year, month, day) {
+        month = month == 13 ? 1 : month
+
         month = month > 9 ? month : `0${month}`
         day = day > 9 ? day : `0${day}`
 
