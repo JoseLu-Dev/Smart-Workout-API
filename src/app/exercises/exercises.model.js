@@ -18,6 +18,9 @@ const exercisesSchema = new mongoose.Schema({
     bodyWeight: {
         type: Boolean,
     },
+    static: {
+        type: Boolean,
+    },
 })
 
 /**

@@ -16,6 +16,7 @@ const exercises = [
         progressions: ['Full', 'Straddle', 'Tuck Advanced', 'Tuck'],
         muscleGroup: 'Lats',
         bodyWeight: true,
+        static: false,
     },
     {
         name: 'Planche press',
