@@ -4,11 +4,25 @@ const mongoose = require('mongoose')
  * Sets the connection to the database
  */
 function connectToDatabase() {
-  const { DATABASE_URL, DATABASE_URL_TEST, NODE_ENV } = process.env
+  const {
+    DATABASE_URL_PRODUCTION,
+    DATABASE_URL_DEVELOPMENT,
+    DATABASE_URL_TEST, NODE_ENV,
+  } = process.env
 
-  const connectionString = NODE_ENV == 'test'
-    ? DATABASE_URL_TEST
-    : DATABASE_URL
+  let connectionString;
+
+  switch (NODE_ENV) {
+    case 'test':
+      connectionString = DATABASE_URL_TEST
+      break;
+    case 'production':
+      connectionString = DATABASE_URL_PRODUCTION
+      break;
+    default:
+      connectionString = DATABASE_URL_DEVELOPMENT
+      break;
+  }
 
   mongoose.connect(connectionString, {
     useNewUrlParser: true,
