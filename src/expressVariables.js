@@ -4,7 +4,7 @@
  */
 function setExpressVariables(app) {
     // port in which app will listen to
-    app.set('port', process.env.SERVER_PORT)
+    app.set('port', process.env.PORT)
 }
 
 module.exports = setExpressVariables
