@@ -1,5 +1,6 @@
 const BaseController = require('../common/base.controller')
 const DaysModel = require('./days.model')
+const TrainingsModel = require('../trainings/trainings.model')
 
 class ExercisesController extends BaseController {
     constructor() {
@@ -22,7 +23,7 @@ class ExercisesController extends BaseController {
             lastDay = this.createDate(year, new Number(req.params.month) + 1, 1)
         } catch (err) {
             console.log(err)
-            res.status(400).json({ error: err.message })
+            return res.status(400).json({ error: err.message })
         }
 
         let days
@@ -34,7 +35,7 @@ class ExercisesController extends BaseController {
                 })
         } catch (err) {
             console.log(err)
-            res.status(400).json({ error: err.message })
+            return res.status(400).json({ error: err.message })
         }
         res.status(200).json(days)
     }
@@ -54,7 +55,7 @@ class ExercisesController extends BaseController {
             nextDay = this.createDate(year, req.params.month, new Number(req.params.day) + 1)
         } catch (err) {
             console.log(err)
-            res.status(400).json({ error: err.message })
+            return res.status(400).json({ error: err.message })
         }
 
         let day
@@ -66,7 +67,7 @@ class ExercisesController extends BaseController {
                 })
         } catch (err) {
             console.log(err)
-            res.status(400).json({ error: err.message })
+            return res.status(400).json({ error: err.message })
         }
         res.status(200).json(day)
     }
@@ -78,18 +79,33 @@ class ExercisesController extends BaseController {
      * @param {*} res 
      */
     put = async (req, res) => {
-        const currentTraining = await this.model.findOne({ userId: req.userId, date: req.body.date })
-        if (currentTraining) {
-            if (currentTraining.trainings) {
-                req.body.trainings = currentTraining.trainings.concat(req.body.trainings)
+        console.log('put day')
+        req.body.trainings.forEach((trainingSpecs) => {
+            if (!trainingSpecs?.id) {
+                try {
+                    const training = new TrainingsModel({userId: req.userId, date: req.body.date})
+                    training.save((err, item) => {
+                        // 11000 is the code for duplicate key error
+                        if (err && err.code === 11000) {
+                            return res.sendStatus(409)
+                        }
+                        if (err) {
+                            console.error(err)
+                            return res.sendStatus(500);
+                        }
+                    })
+                    trainingSpecs.id = training._id
+                }catch{
+                    return res.sendStatus(500)
+                }
             }
-        }
-
+        })
         this.model.updateOne({ userId: req.userId, date: req.body.date }, req.body, { upsert: true }, (err) => {
             if (err) {
-                return console.error(err);
+                console.error(err);
+                return res.sendStatus(400)
             }
-            res.sendStatus(200);
+            return res.sendStatus(200)
         });
     }
 
