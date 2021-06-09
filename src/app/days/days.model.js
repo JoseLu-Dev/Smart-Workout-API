@@ -3,18 +3,16 @@ const mongoose = require('mongoose')
 const daysSchema = new mongoose.Schema({
     userId: {
         type: String,
-
     },
     date: {
         type: Date,
-
     },
     trainings: [{
         name: {
             type: String,
             required: true,
         },
-        trainingId: {
+        id: {
             type: String,
             required: true,
         },
