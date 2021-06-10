@@ -80,33 +80,34 @@ class ExercisesController extends BaseController {
      */
     put = async (req, res) => {
         console.log('put day')
-        req.body.trainings.forEach((trainingSpecs) => {
-            if (!trainingSpecs?.id) {
-                try {
-                    const training = new TrainingsModel({userId: req.userId, date: req.body.date})
-                    training.save((err, item) => {
-                        // 11000 is the code for duplicate key error
-                        if (err && err.code === 11000) {
-                            return res.sendStatus(409)
-                        }
-                        if (err) {
-                            console.error(err)
-                            return res.sendStatus(500);
-                        }
-                    })
-                    trainingSpecs.id = training._id
-                }catch{
-                    return res.sendStatus(500)
-                }
+        const trainingSpecs = req.body.trainings[req.body.trainings.length-1]
+        if (!trainingSpecs?.id) {
+            try {
+                const training = new TrainingsModel({ userId: req.userId, date: req.body.date })
+                training.save((err, item) => {
+                    // 11000 is the code for duplicate key error
+                    if (err && err.code === 11000) {
+                        return res.sendStatus(409)
+                    }
+                    if (err) {
+                        console.error(err)
+                        return res.sendStatus(500);
+                    }
+                })
+                trainingSpecs.id = training._id
+                this.model.updateOne({ userId: req.userId, date: req.body.date }, req.body, { upsert: true }, (err) => {
+                    if (err) {
+                        console.error(err);
+                        return res.sendStatus(400)
+                    }
+                    return res.status(200).json( trainingSpecs.id )
+                })
+            } catch {
+                return res.sendStatus(500)
             }
-        })
-        this.model.updateOne({ userId: req.userId, date: req.body.date }, req.body, { upsert: true }, (err) => {
-            if (err) {
-                console.error(err);
-                return res.sendStatus(400)
-            }
-            return res.sendStatus(200)
-        });
+        }
+
+
     }
 
     createDate(year, month, day) {
