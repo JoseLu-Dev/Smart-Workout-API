@@ -66,27 +66,6 @@ describe('Patch one', () => {
 
         expect(sameExercise).toBe(true)
     })
-
-    test('Should update if it already exist', async () => {
-        const toUpdateExercise = {
-            name: 'Pull ups',
-            variations: ['Supine'],
-        }
-
-        const preUpdateExercise = await Exercises.findOne({ name: toUpdateExercise.name })
-
-        await api
-            .put('/exercises')
-            .set('Authorization', 'bearer ' + authToken)
-            .send(toUpdateExercise)
-            .expect(200)
-
-        const updatedExercise = await Exercises.findOne({ name: toUpdateExercise.name })
-        console.log(updatedExercise)
-
-        expect([updatedExercise.variations[0], updatedExercise.variations[1]])
-        .toMatchObject(preUpdateExercise.variations.concat(toUpdateExercise.variations))
-    })
 })
 
 describe('Get all', () => {
