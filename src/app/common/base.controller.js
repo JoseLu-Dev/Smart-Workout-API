@@ -81,6 +81,7 @@ class BaseController {
                 res.sendStatus(400);
             }
             if (err) {
+                res.sendStatus(400);
                 return console.error(err);
             }
             res.sendStatus(200);
