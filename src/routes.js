@@ -4,6 +4,7 @@ const usersRouter = require('./app/users/users.routes')
 const authRouter = require('./app/auth/auth.routes')
 const exercisesRoutes = require('./app/exercises/exercises.routes')
 const daysRouter = require('./app/days/days.routes')
+const trainingsRouter = require('./app/trainings/trainings.routes')
 
 /**
  * Sets app routes
@@ -23,6 +24,9 @@ function setRoutes(app) {
 
   // Days routes
   router.use('/days', daysRouter)
+
+  // Training routes
+  router.use('/trainings', trainingsRouter)
 
   // Apply the routes to our application
   app.use('', router);

@@ -82,7 +82,7 @@ const trainingsSchema = new mongoose.Schema({
     },
     setsDone: [{
         setParts: {
-            type: setPart,
+            type: [setPart],
             required: true,
         },
         type: {
