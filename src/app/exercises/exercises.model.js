@@ -40,6 +40,8 @@ exercisesSchema.pre('save', lowerCaseName)
 exercisesSchema.set('toJSON', {
     transform: (documents, returnedObject) => {
         // eslint-disable-next-line no-param-reassign
+        returnedObject.id = returnedObject._id;
+        // eslint-disable-next-line no-param-reassign
         delete returnedObject._id
         // eslint-disable-next-line no-param-reassign
         delete returnedObject.__v

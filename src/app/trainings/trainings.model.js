@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 
 const exerciseSelected = new mongoose.Schema({
+    specsId: {
+        type: String,
+    },
     name: {
         type: String,
         required: true,
