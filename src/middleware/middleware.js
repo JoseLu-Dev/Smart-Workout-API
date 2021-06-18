@@ -6,8 +6,8 @@ const jwtConfig = require('../jwt-config')
 
 /**
  * Middleware to exclude a middleware from a specified route
- * @param {*} path route to exclude middleware
  * @param {*} middleware middleware to exclude
+ * @param {*} path route to exclude middleware
  */
 const excludeMiddlewareFromRoute = function (middleware, path) {
     return function (req, res, next) {
@@ -40,7 +40,7 @@ function setMiddleware(app) {
      * @param {*} next
      */
     function httpCallLogger(req, res, next) {
-        if (process.env.NODE_ENV != 'test') {
+        if (process.env.NODE_ENV != 'dev') {
             console.log(`method: ${req.method}`)
             console.log(`path: ${req.path}`)
             console.log(`body: ${JSON.stringify(req.body)}`)

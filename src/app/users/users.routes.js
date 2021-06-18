@@ -15,9 +15,6 @@ router.use('', async (req, res, next) => {
 router.use('/bands', bandsRouter)
 
 // Users
-router.route('').post(usersController.insert)
-router.route('/:id').get(usersController.get)
-router.route('/:id').put(usersController.update)
 // router.route('/:id').delete(usersController.delete)
 
 module.exports = router

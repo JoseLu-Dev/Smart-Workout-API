@@ -28,7 +28,7 @@ function setRoutes(app) {
   // Training routes
   router.use('/trainings', trainingsRouter)
 
-  // Apply the routes to our application
+  // Apply the routes to the application
   app.use('', router);
 }
 

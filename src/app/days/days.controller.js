@@ -79,7 +79,7 @@ class ExercisesController extends BaseController {
      * @param {*} res 
      */
     put = async (req, res) => {
-        console.log('put day')
+        console.log(req.body.date)
         const trainingSpecs = req.body.trainings[req.body.trainings.length-1]
         if (!trainingSpecs?.id) {
             try {

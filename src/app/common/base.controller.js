@@ -5,12 +5,10 @@
 class BaseController {
 
     /**
-     * 
      * @param {*} model the model that the controller will use to do queries
      */
     constructor(model) {
         this.model = model;
-        //this.create = this.create.bind(this);
     }
 
     /**
