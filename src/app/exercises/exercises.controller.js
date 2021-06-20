@@ -22,10 +22,27 @@ class ExercisesController extends BaseController {
         });
     }
 
+    /**
+     * Get an array of all exercises "name" and "_id" fields
+     */
     getAllExercisesNames = async (req, res) => {
         try {
             let exercisesNames = await this.model.find({}).select({ name: 1, _id: 1 })
 
+            res.status(200).json(exercisesNames)
+        } catch (err) {
+            res.sendStatus(400)
+            return console.error(err)
+        }
+    }
+
+    /**
+     * Get an array of all exercises "name" and "_id" fields
+     * that its names matches the search
+     */
+    getExercisesByName = async (req, res) => {
+        try {
+            let exercisesNames = await this.model.find({name: {$regex: `${req.params.search}`, $options: 'i'}}).select({ name: 1, _id: 1 })
             res.status(200).json(exercisesNames)
         } catch (err) {
             res.sendStatus(400)
