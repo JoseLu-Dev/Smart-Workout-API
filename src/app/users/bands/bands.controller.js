@@ -1,7 +1,7 @@
 const BaseController = require('../../common/base.controller')
 const BandsModel = require('./bands.model')
 
-class UsersController extends BaseController {
+class BandsController extends BaseController {
   constructor() {
     super(BandsModel)
   }
@@ -23,15 +23,16 @@ class UsersController extends BaseController {
         return res.sendStatus(400)
       }
     } else {
+      let band
       try {
-        const band = await this.model.updateOne({ userId: req.userId, _id: req.body.id }, req.body)
+        band = await this.model.updateOne({ userId: req.userId, _id: req.body.id }, req.body)
       }
       catch (err) {
         console.error(err)
         return res.sendStatus(400)
       }
 
-      return res.status(200).json(item);
+      return res.status(200).json(band);
     }
   }
 
@@ -46,4 +47,4 @@ class UsersController extends BaseController {
   }
 }
 
-module.exports = UsersController
+module.exports = BandsController

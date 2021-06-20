@@ -40,7 +40,8 @@ const userSchema = new mongoose.Schema({
 })
 
 /**
- * Encrypts the user password using bcrypt before saving it to the database
+ * Encrypts the user password the first time it is saved
+ *  using bcrypt before saving it to the database
  * @param {*} next
  */
 const encryptUserPassword = async function (next) {
@@ -53,6 +54,7 @@ const encryptUserPassword = async function (next) {
     }
     next()
 }
+
 userSchema.pre('save', encryptUserPassword)
 
 /**
@@ -78,9 +80,6 @@ const compareIfSamePassword = async function (candidatePassword) {
     return false;
 }
 
-userSchema.method(
-    'compareIfSamePassword',
-    compareIfSamePassword,
-)
+userSchema.method('compareIfSamePassword', compareIfSamePassword)
 
 module.exports = mongoose.model('Users', userSchema)
