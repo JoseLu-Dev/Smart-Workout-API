@@ -61,8 +61,10 @@ module.exports.sendConfirmationEmail = (name, email, confirmationCode) => {
             </div>`,
     }
     smtpTransport.sendMail(mailOptions, (error, response) => {
-        // eslint-disable-next-line no-unused-expressions
-        error ? console.log(error) : console.log(response)
+        if (process.env.NODE_ENV === 'development') {
+            // eslint-disable-next-line no-unused-expressions
+            error ? console.log(error) : console.log(response)
+        }
         smtpTransport.close();
     })
 }
