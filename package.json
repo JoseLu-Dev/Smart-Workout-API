@@ -1,7 +1,7 @@
 {
-  "name": "tfc-back",
-  "version": "0.0.0",
-  "description": "",
+  "name": "smart-workout-api",
+  "version": "v0.1-a.1",
+  "description": "Backend API rest to manage and store data of Smart Workout app",
   "main": "server.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon src/server.js",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "tfc-backend"
+    "url": "https://github.com/JoseLu-Dev/Smart-Workout-API"
   },
   "author": "JoseLuDev",
   "license": "ISC",
