@@ -5,11 +5,11 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Smart Workout Front End</h3>
+  <h3 align="center">Smart Workout API Rest</h3>
 
   <p align="center">
     Backend web app that is used by 
-    <a href="https://joselu-dev.github.io/Smart-Workout-API/#/">Smart Workout</a>
+    <a href="https://github.com/JoseLu-Dev/Smart-Workout">Smart Workout</a>
     . Built with Nodejs, Express and Mongoose.
     <br />
     <br />
@@ -40,7 +40,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Backend API rest to manage and store users data of [Smart Workout](https://github.com/joselu-dev/Smart-Workout-API) app
+Backend API rest to manage and store data of [Smart Workout](https://github.com/JoseLu-Dev/Smart-Workout) app
 
 ### Built With
 
