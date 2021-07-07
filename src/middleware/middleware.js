@@ -40,7 +40,7 @@ function setMiddleware(app) {
      * @param {*} next
      */
     function httpCallLogger(req, res, next) {
-        if (process.env.NODE_ENV != 'dev') {
+        if (process.env.NODE_ENV === 'development') {
             console.log(`method: ${req.method}`)
             console.log(`path: ${req.path}`)
             console.log(`body: ${JSON.stringify(req.body)}`)
