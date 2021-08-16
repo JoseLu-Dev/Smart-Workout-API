@@ -1,6 +1,7 @@
 const BaseController = require('../common/base.controller')
 const DaysModel = require('./days.model')
 const TrainingsModel = require('../trainings/trainings.model')
+const mongoose = require('mongoose')
 
 class ExercisesController extends BaseController {
     constructor() {
@@ -79,35 +80,70 @@ class ExercisesController extends BaseController {
      * @param {*} res 
      */
     put = async (req, res) => {
-        console.log(req.body.date)
-        const trainingSpecs = req.body.trainings[req.body.trainings.length-1]
-        if (!trainingSpecs?.id) {
-            try {
-                const training = new TrainingsModel({ userId: req.userId, date: req.body.date })
-                training.save((err, item) => {
-                    // 11000 is the code for duplicate key error
-                    if (err && err.code === 11000) {
-                        return res.sendStatus(409)
-                    }
-                    if (err) {
-                        console.error(err)
-                        return res.sendStatus(500);
-                    }
-                })
-                trainingSpecs.id = training._id
-                this.model.updateOne({ userId: req.userId, date: req.body.date }, req.body, { upsert: true }, (err) => {
-                    if (err) {
-                        console.error(err);
-                        return res.sendStatus(400)
-                    }
-                    return res.status(200).json( trainingSpecs.id )
-                })
-            } catch {
-                return res.sendStatus(500)
+        if (req.body.trainings.length > 0) {
+            const trainingSpecs = req.body.trainings[req.body.trainings.length - 1]
+            if (!trainingSpecs?.id) {
+                try {
+                    const training = new TrainingsModel({ userId: req.userId, date: req.body.date })
+                    training.save((err, item) => {
+                        // 11000 is the code for duplicate key error
+                        if (err && err.code === 11000) {
+                            return res.sendStatus(409)
+                        }
+                        if (err) {
+                            console.error(err)
+                            return res.sendStatus(500);
+                        }
+                    })
+                    trainingSpecs.id = training._id
+                    this.model.updateOne({ userId: req.userId, date: req.body.date }, req.body, { upsert: true }, (err) => {
+                        if (err) {
+                            console.error(err);
+                            return res.sendStatus(400)
+                        }
+                        return res.status(200).json(trainingSpecs.id)
+                    })
+                } catch {
+                    return res.sendStatus(500)
+                }
             }
+        } else {
+            this.model.findOneAndRemove({ userId: req.userId, date: req.body.date }, (err) => {
+                if (err) { return console.error(err); }
+                res.sendStatus(200);
+            });
+        }
+    }
+
+    /**
+     * Creates a new training copying another one
+     * @param {*} req 
+     * @param {*} res 
+     */
+    createFromExisting = async (req, res) => {
+        const trainingDay = req.body.trainingDay
+        const date = req.body.date
+
+        const trainingToCopy = new TrainingsModel(await TrainingsModel.findOne({ _id: trainingDay.trainings[trainingDay.trainings.length - 1].id }))
+        trainingToCopy._id = mongoose.Types.ObjectId();
+        trainingToCopy.date = date
+        trainingToCopy.isNew = true
+
+        try {
+            await trainingToCopy.save()
+        } catch (err) {
+            return res.sendStatus(400)
         }
 
+        trainingDay.trainings[trainingDay.trainings.length - 1].id = trainingToCopy._id
 
+        this.model.updateOne({ userId: req.userId, date: date }, trainingDay, { upsert: true }, (err) => {
+            if (err) {
+                console.error(err);
+                return res.sendStatus(400)
+            }
+            return res.status(200).json(trainingToCopy.id)
+        })
     }
 
     createDate(year, month, day) {

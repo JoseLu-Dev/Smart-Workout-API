@@ -3,6 +3,7 @@ const jwtConfig = require('../../jwt-config')
 
 const BaseController = require('../common/base.controller')
 const UsersModel = require('../users/users.model')
+const DataModel = require('../users/data/data.model')
 
 const nodemailerService = require("../services/nodemailer.service")
 
@@ -69,6 +70,10 @@ class AuthController extends BaseController {
             await user.save()
 
             sendVerificationEmail(user)
+
+            const userData = new DataModel()
+            userData.userId = user._id
+            userData.save()
 
             res.status(201).json({ message: "User was registered successfully! Please check your email to activate your Account" })
 

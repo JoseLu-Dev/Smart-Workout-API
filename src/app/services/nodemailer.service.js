@@ -6,7 +6,7 @@ const OAuth2 = google.auth.OAuth2;
 let oauth2Client
 let accessToken
 
-(async function () {
+/* (async function () {
     try {
         oauth2Client = new OAuth2(
             process.env.GOOGLE_CLOUD_CLIENT, // ClientID
@@ -22,7 +22,7 @@ let accessToken
     } catch (err) {
         console.log(err)
     }
-}());
+}()); */
 
 const smtpTransport = nodemailer.createTransport({
     service: 'gmail',
