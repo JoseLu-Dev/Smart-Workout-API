@@ -1,6 +1,6 @@
 {
   "name": "smart-workout-api",
-  "version": "v0.1-a.1",
+  "version": "1.0.0",
   "description": "Backend API rest to manage and store data of Smart Workout app",
   "main": "server.js",
   "scripts": {
