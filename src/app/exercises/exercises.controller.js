@@ -13,7 +13,8 @@ class ExercisesController extends BaseController {
      * @param {*} res 
      */
     put = async (req, res) => {
-        this.model.updateOne({ name: req.body.name }, req.body, { upsert: true }, (err) => {
+        req.body.userId = req.userId
+        this.model.updateOne({ userId: req.userId, name: req.body.name }, req.body, { upsert: true }, (err) => {
             if (err) {
                 res.sendStatus(400)
                 return console.error(err)
@@ -27,7 +28,7 @@ class ExercisesController extends BaseController {
      */
     getAllExercisesNames = async (req, res) => {
         try {
-            let exercisesNames = await this.model.find({}).select({ name: 1, _id: 1 })
+            let exercisesNames = await this.model.find({ userId: req.userId }).select({ name: 1, _id: 1 })
 
             res.status(200).json(exercisesNames)
         } catch (err) {
@@ -43,7 +44,7 @@ class ExercisesController extends BaseController {
     getExercisesByName = async (req, res) => {
         if (!req.params.search) { res.sendStatus(400); }
         try {
-            let exercises = await this.model.find({ name: { $regex: `${req.params.search}`, $options: 'i' } }).select({ name: 1, muscleGroup: 1, _id: 1 })
+            let exercises = await this.model.find({ userId: req.userId, name: { $regex: `${req.params.search}`, $options: 'i' } }).select({ name: 1, muscleGroup: 1, _id: 1 })
             res.status(200).json(exercises)
         } catch (err) {
             res.sendStatus(400)
@@ -56,7 +57,7 @@ class ExercisesController extends BaseController {
      */
     getFewExercises = async (req, res) => {
         try {
-            let exercises = await this.model.find({}).select({ name: 1, muscleGroup: 1, _id: 1 }).limit(5)
+            let exercises = await this.model.find({}).select({ userId: req.userId, name: 1, muscleGroup: 1, _id: 1 }).limit(5)
             res.status(200).json(exercises)
         } catch (err) {
             res.sendStatus(400)
