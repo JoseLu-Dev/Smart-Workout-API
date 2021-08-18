@@ -146,6 +146,27 @@ class ExercisesController extends BaseController {
         })
     }
 
+    getTrainingSpecs = async (req, res) => {
+        try {
+            const trainingDay = await this.model.findOne({ trainings: { $elemMatch: { id: req.params.id } } })
+
+            if (!trainingDay) { return res.sendStatus(404) }
+
+            let trainingSpecs = trainingDay.trainings.filter(trainingSpecs => trainingSpecs.id == req.params.id)[0]
+
+            res.status(200).json(
+                {
+                    name: trainingSpecs.name,
+                    color: trainingSpecs.color,
+                    date: trainingDay.date
+                }
+            )
+        } catch (err) {
+            res.sendStatus(400)
+        }
+
+    }
+
     createDate(year, month, day) {
         month = month == 13 ? 1 : month
 

@@ -8,6 +8,7 @@ const daysController = new DaysController()
 /**
  * Two, Three parameters for same route
  */
+router.route('/training-specs/:id').get(daysController.getTrainingSpecs)
 router.route('/from-existing').put(daysController.createFromExisting);
 router.route('/:year/:month/:day').get(daysController.getSingleDay);
 router.route('/:year/:month').get(daysController.getByYearAndMonth);
