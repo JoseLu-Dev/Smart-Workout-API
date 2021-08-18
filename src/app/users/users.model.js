@@ -80,6 +80,20 @@ const compareIfSamePassword = async function (candidatePassword) {
     return false;
 }
 
+/**
+ * Remove _id, __v and password from the object before converting it to json
+ */
+userSchema.method('compareIfSamePassword', compareIfSamePassword).set('toJSON', {
+    transform: (documents, returnedObject) => {
+        // eslint-disable-next-line no-param-reassign
+        delete returnedObject._id
+        // eslint-disable-next-line no-param-reassign
+        delete returnedObject.__v
+        // eslint-disable-next-line no-param-reassign
+        delete returnedObject.password
+    },
+})
+
 userSchema.method('compareIfSamePassword', compareIfSamePassword)
 
 module.exports = mongoose.model('Users', userSchema)
