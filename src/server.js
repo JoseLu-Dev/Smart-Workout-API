@@ -13,6 +13,11 @@ connectToDatabase()
 // Set middleware of app
 setMiddleware(app)
 
+// Route to test connection
+app.get('/auth', async (req, res) => {
+  res.sendStatus(200)
+})
+
 // Set app routes
 setRoutes(app)
 
