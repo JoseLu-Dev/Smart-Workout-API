@@ -101,7 +101,7 @@ class ExercisesController extends BaseController {
                             console.error(err);
                             return res.sendStatus(400)
                         }
-                        return res.status(200).json(trainingSpecs.id)
+                        return res.status(200).json(req.body)
                     })
                 } catch {
                     return res.sendStatus(500)
@@ -110,7 +110,7 @@ class ExercisesController extends BaseController {
         } else {
             this.model.findOneAndRemove({ userId: req.userId, date: req.body.date }, (err) => {
                 if (err) { return console.error(err); }
-                res.sendStatus(200);
+                res.status(200).json({status: 'success'});
             });
         }
     }
@@ -142,7 +142,7 @@ class ExercisesController extends BaseController {
                 console.error(err);
                 return res.sendStatus(400)
             }
-            return res.status(200).json(trainingToCopy.id)
+            return res.status(200).json(trainingDay)
         })
     }
 
