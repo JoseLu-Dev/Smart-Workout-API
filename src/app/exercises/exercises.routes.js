@@ -8,6 +8,7 @@ const exercisesController = new ExercisesController()
 router.route('/few').get(exercisesController.getFewExercises)
 router.route('/by-name/:search').get(exercisesController.getExercisesByName)
 router.route('/:id').get(exercisesController.get)
+router.route('/:id').delete(exercisesController.delete)
 router.route('').get(exercisesController.getAllExercisesNames);
 router.route('').put(exercisesController.put)
 

@@ -13,8 +13,15 @@ class ExercisesController extends BaseController {
      * @param {*} res 
      */
     put = async (req, res) => {
+        let query
         req.body.userId = req.userId
-        this.model.updateOne({ userId: req.userId, name: req.body.name }, req.body, { upsert: true }, (err) => {
+        if (req.body.id) { 
+            query = {userId: req.userId, _id: req.body.id}
+        }else{
+            query = { userId: req.userId, name: req.body.name }
+        }
+        
+        this.model.updateOne(query, req.body, { upsert: true }, (err) => {
             if (err) {
                 res.sendStatus(400)
                 return console.error(err)

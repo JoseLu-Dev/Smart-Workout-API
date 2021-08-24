@@ -101,7 +101,7 @@ class ExercisesController extends BaseController {
                             console.error(err);
                             return res.sendStatus(400)
                         }
-                        return res.status(200).json(trainingSpecs.id)
+                        return res.status(200).json(req.body)
                     })
                 } catch {
                     return res.sendStatus(500)
@@ -110,7 +110,7 @@ class ExercisesController extends BaseController {
         } else {
             this.model.findOneAndRemove({ userId: req.userId, date: req.body.date }, (err) => {
                 if (err) { return console.error(err); }
-                res.sendStatus(200);
+                res.status(200).json({status: 'success'});
             });
         }
     }
@@ -142,8 +142,29 @@ class ExercisesController extends BaseController {
                 console.error(err);
                 return res.sendStatus(400)
             }
-            return res.status(200).json(trainingToCopy.id)
+            return res.status(200).json(trainingDay)
         })
+    }
+
+    getTrainingSpecs = async (req, res) => {
+        try {
+            const trainingDay = await this.model.findOne({ trainings: { $elemMatch: { id: req.params.id } } })
+
+            if (!trainingDay) { return res.sendStatus(404) }
+
+            let trainingSpecs = trainingDay.trainings.filter(trainingSpecs => trainingSpecs.id == req.params.id)[0]
+
+            res.status(200).json(
+                {
+                    name: trainingSpecs.name,
+                    color: trainingSpecs.color,
+                    date: trainingDay.date
+                }
+            )
+        } catch (err) {
+            res.sendStatus(400)
+        }
+
     }
 
     createDate(year, month, day) {
