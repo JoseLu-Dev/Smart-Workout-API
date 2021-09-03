@@ -2,7 +2,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/JoseLu-Dev/Smart-Workout-API">
-    <img src="images/logo.svg" alt="Logo" width="80" height="80">
+    <img src="resources/logo.svg" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Smart Workout API Rest</h3>
