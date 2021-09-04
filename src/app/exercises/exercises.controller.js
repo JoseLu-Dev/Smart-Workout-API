@@ -15,12 +15,12 @@ class ExercisesController extends BaseController {
     put = async (req, res) => {
         let query
         req.body.userId = req.userId
-        if (req.body.id) { 
-            query = {userId: req.userId, _id: req.body.id}
-        }else{
+        if (req.body.id) {
+            query = { userId: req.userId, _id: req.body.id }
+        } else {
             query = { userId: req.userId, name: req.body.name }
         }
-        
+
         this.model.updateOne(query, req.body, { upsert: true }, (err) => {
             if (err) {
                 res.sendStatus(400)
@@ -64,7 +64,7 @@ class ExercisesController extends BaseController {
      */
     getFewExercises = async (req, res) => {
         try {
-            let exercises = await this.model.find({}).select({ userId: req.userId, name: 1, muscleGroup: 1, _id: 1 }).limit(5)
+            let exercises = await this.model.find({ userId: req.userId }).select({ name: 1, muscleGroup: 1, _id: 1 }).limit(5)
             res.status(200).json(exercises)
         } catch (err) {
             res.sendStatus(400)
