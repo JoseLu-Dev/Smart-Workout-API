@@ -37,7 +37,7 @@ class AuthController extends BaseController {
         }
         if (!samePassword) return res.status(403).json({ message: "Invalid credentials" })
 
-        if (user.status == "Pending") return res.status(400).json({ message: "You must confirm your email before continuing" })
+        // if (user.status == "Pending") return res.status(400).json({ message: "You must confirm your email before continuing" })
 
         const token = jwt.sign(
             {
