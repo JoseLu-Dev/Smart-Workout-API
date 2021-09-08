@@ -132,6 +132,7 @@ class ExercisesController extends BaseController {
         try {
             await trainingToCopy.save()
         } catch (err) {
+            console.log(err)
             return res.sendStatus(400)
         }
 
