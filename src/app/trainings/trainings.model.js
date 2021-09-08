@@ -70,7 +70,6 @@ const setPart = new mongoose.Schema({
     },
     rest: {
         type: Number,
-        required: true,
     },
 })
 
