@@ -1,4 +1,5 @@
 const cors = require('cors')
+const morgan = require('morgan')
 const express = require('express');
 
 const jwt = require('jsonwebtoken');
@@ -34,22 +35,11 @@ function setMiddleware(app) {
     app.use(express.json())
 
     /**
-     * Middleware that logs in console http calls information
-     * @param {*} req
-     * @param {*} res
-     * @param {*} next
+     * Morgan middleware to log request
      */
-    function httpCallLogger(req, res, next) {
-        if (process.env.NODE_ENV === 'development') {
-            console.log(`method: ${req.method}`)
-            console.log(`path: ${req.path}`)
-            console.log(`body: ${JSON.stringify(req.body)}`)
-            console.log(`Auth header: ${req.headers.authorization}`)
-        }
-        next();
+    if (process.env.NODE_ENV === 'development') {
+        app.use(morgan('dev'))
     }
-
-    app.use(httpCallLogger)
 
     /**
      * Middleware to handle errors in a simple way
