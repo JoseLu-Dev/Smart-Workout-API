@@ -17,6 +17,9 @@ class UsersController extends BaseController {
   }
 
   putUserWeight = async (req, res) => {
+    if(!req.body.weight){ 
+      return res.sendStatus(400)
+    }
     this.model.findOne({ userId: req.userId }, (err, item) => {
       if (err) {
         res.sendStatus(400);

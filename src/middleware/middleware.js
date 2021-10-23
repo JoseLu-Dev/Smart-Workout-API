@@ -3,6 +3,7 @@ const morgan = require('morgan')
 const express = require('express');
 
 const jwtMiddleware = require('./jtwVerification');
+const restMonitorMiddleware = require('./restMonitor');
 
 /**
  * Middleware to exclude a middleware from a specified route
@@ -23,6 +24,8 @@ const excludeMiddlewareFromRoute = function (middleware, path) {
  * @param {*} app Express app
  */
 function setMiddleware(app) {
+    const nodeEnv = process.env.NODE_ENV
+
     /**
      * Enable api to receive calls from every ip
      */
@@ -36,8 +39,12 @@ function setMiddleware(app) {
     /**
      * Morgan middleware to log request
      */
-    if (process.env.NODE_ENV === 'development') {
+    if (nodeEnv === 'development') {
         app.use(morgan('dev'))
+    }
+
+    if (nodeEnv !== 'development' && nodeEnv !== 'test') {
+        app.use(restMonitorMiddleware)
     }
 
     /**

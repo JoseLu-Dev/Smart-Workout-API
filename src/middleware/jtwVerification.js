@@ -7,7 +7,7 @@ const jwtConfig = require('../jwt-config')
 * @param {*} res
 * @param {*} next
 */
-export default function jwtMiddleware(req, res, next) {
+module.exports = function jwtMiddleware(req, res, next) {
     const authHeader = req.headers.authorization;
 
     if (authHeader) {
