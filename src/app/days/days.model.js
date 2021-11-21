@@ -48,8 +48,6 @@ daysSchema.pre('save', lowerCaseName)
 daysSchema.set('toJSON', {
     transform: (documents, returnedObject) => {
         // eslint-disable-next-line no-param-reassign
-        delete returnedObject._id
-        // eslint-disable-next-line no-param-reassign
         delete returnedObject.__v
     },
 })

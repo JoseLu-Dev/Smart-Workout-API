@@ -72,18 +72,17 @@ class BaseController {
      * @param {*} req 
      * @param {*} res 
      */
-    update = (req, res) => {
-        this.model.findOneAndUpdate({ _id: req.params.id }, req.body, (err) => {
+    update = async (req, res) => {
+        const item = await this.model.findOneAndUpdate({ _id: req.params.id }, req.body, (err) => {
             // 11000 is the code for duplicate key error
             if (err && err.code === 11000) {
-                res.sendStatus(400);
+                return res.sendStatus(400);
             }
             if (err) {
-                res.sendStatus(400);
-                return console.error(err);
+                return res.sendStatus(400);
             }
-            res.sendStatus(200);
         });
+        res.status(200).json(item);
     }
 
     /**

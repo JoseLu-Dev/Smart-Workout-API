@@ -110,7 +110,7 @@ class ExercisesController extends BaseController {
         } else {
             this.model.findOneAndRemove({ userId: req.userId, date: req.body.date }, (err) => {
                 if (err) { return console.error(err); }
-                res.status(200).json({status: 'success'});
+                res.status(200).json({ status: 'success' });
             });
         }
     }
